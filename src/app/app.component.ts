@@ -10,7 +10,6 @@ import { DataService } from './data.service';
 export class AppComponent implements OnInit {
   entities = [];
   relationships = [];
-  openNav = false;
   simulation: d3.Simulation<any, any>;
   @ViewChild('svgEle') svgElement: ElementRef;
 
@@ -34,7 +33,8 @@ export class AppComponent implements OnInit {
       .alphaMin(.0001)
       .alphaDecay(0.0005)
       .on('tick', () => {
-        //
+        // This is where we would normally manipulate the DOM
+        // and update node positions
       })
       .force('link', d3.forceLink(this.relationships)
         // Associate links with nodes by way of display name
@@ -44,7 +44,6 @@ export class AppComponent implements OnInit {
     this.dataService.getEntitiesAndLinks().subscribe((stuff: any) => {
       this.entities = stuff.entities;
       this.relationships = stuff.relationships;
-      this.openNav = true;
       this.simulation.nodes(this.entities);
       this.simulation.force('link', d3.forceLink(this.relationships)
         .id((node: any) => node.displayName)
