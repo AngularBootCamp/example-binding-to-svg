@@ -178,3 +178,7 @@ a.btn-floating {
   font-size: 1.3rem;
   line-height: inherit;
 }
+.container {
+  width: 100%;
+  max-width: 100%;
+}
