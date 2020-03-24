@@ -6,27 +6,27 @@ import {
 } from '@angular/core';
 import * as d3 from 'd3';
 
-import { DataService } from './data.service';
+import { GraphService, Person, Relationship } from './graph.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  entities = [];
-  relationships = [];
-  simulation: d3.Simulation<any, any> | undefined;
+  peopleNodes: Person[] = [];
+  relationshipNodes: Relationship[] = [];
+  simulation: d3.Simulation<Person, Relationship> | undefined;
   @ViewChild('svgEle', { static: true }) svgElement:
     | ElementRef
     | undefined;
 
-  constructor(private dataService: DataService) {}
+  constructor(private graphService: GraphService) {}
 
   ngOnInit() {
     if (this.svgElement) {
       const domElement = this.svgElement.nativeElement;
       this.simulation = d3
-        .forceSimulation<any, any>(this.entities)
+        .forceSimulation<Person, Relationship>(this.peopleNodes)
         .force('charge', d3.forceManyBody().strength(-30))
         .force('center', d3.forceCenter(500 / 2, 500 / 2))
         .force('x', d3.forceX())
@@ -52,30 +52,28 @@ export class AppComponent implements OnInit {
         .force(
           'link',
           d3
-            .forceLink(this.relationships)
+            .forceLink(this.relationshipNodes)
             // Associate links with nodes by way of display name
-            .id((node: any) => node.displayName)
+            .id(node => (node as Person).displayName)
             .distance(0)
             .strength(0.5)
         );
 
-      this.dataService
-        .getEntitiesAndLinks()
-        .subscribe((stuff: any) => {
-          this.entities = stuff.entities;
-          this.relationships = stuff.relationships;
-          if (this.simulation) {
-            this.simulation.nodes(this.entities);
-            this.simulation.force(
-              'link',
-              d3
-                .forceLink(this.relationships)
-                .id((node: any) => node.displayName)
-                .distance(0)
-                .strength(0.5)
-            );
-          }
-        });
+      this.graphService.getPeepsAndRels().subscribe(peepsAndRels => {
+        this.peopleNodes = peepsAndRels.people;
+        this.relationshipNodes = peepsAndRels.relationships;
+        if (this.simulation) {
+          this.simulation.nodes(this.peopleNodes);
+          this.simulation.force(
+            'link',
+            d3
+              .forceLink(this.relationshipNodes)
+              .id(node => (node as Person).displayName)
+              .distance(0)
+              .strength(0.5)
+          );
+        }
+      });
     }
   }
 }

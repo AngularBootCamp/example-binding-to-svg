@@ -1,8 +1,22 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 
-const entitiesAndLinks = {
-  entities: [
+export interface Person extends d3.SimulationNodeDatum {
+  displayName: string;
+  index: number;
+  color: string;
+}
+
+export interface Relationship
+  extends d3.SimulationLinkDatum<Person> {}
+
+export interface RelMap {
+  people: Person[];
+  relationships: Relationship[];
+}
+
+const peepsAndRels: RelMap = {
+  people: [
     {
       displayName: 'Celestine Reilly',
       index: 0,
@@ -2258,9 +2272,11 @@ const entitiesAndLinks = {
   ]
 };
 
-@Injectable()
-export class DataService {
-  getEntitiesAndLinks() {
-    return of(entitiesAndLinks);
+@Injectable({
+  providedIn: 'root'
+})
+export class GraphService {
+  getPeepsAndRels() {
+    return of(peepsAndRels);
   }
 }
