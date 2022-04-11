@@ -20,6 +20,13 @@ export class AppComponent implements OnInit {
     | ElementRef
     | undefined;
 
+  get relationshipNodesForRendering() {
+    return this.relationshipNodes as {
+      source: Person;
+      target: Person;
+    }[];
+  }
+
   constructor(private graphService: GraphService) {}
 
   ngOnInit() {

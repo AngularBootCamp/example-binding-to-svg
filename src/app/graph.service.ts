@@ -7,8 +7,7 @@ export interface Person extends d3.SimulationNodeDatum {
   color: string;
 }
 
-export interface Relationship
-  extends d3.SimulationLinkDatum<Person> {}
+export type Relationship = d3.SimulationLinkDatum<Person>;
 
 export interface RelMap {
   people: Person[];
