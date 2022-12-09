@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "defaultProject": "example-binding-to-svg",
   "newProjectRoot": "projects",
   "projects": {
     "example-binding-to-svg": {
