@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -12,8 +11,7 @@ import { GraphService, Person, Relationship } from './graph.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  standalone: true,
-  imports: [NgFor]
+  standalone: true
 })
 export class AppComponent implements OnInit {
   peopleNodes: Person[] = [];
